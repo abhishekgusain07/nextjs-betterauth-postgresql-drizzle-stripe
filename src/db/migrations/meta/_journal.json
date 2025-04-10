@@ -15,6 +15,13 @@
       "when": 1744178041327,
       "tag": "0001_easy_maelstrom",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1744279455351,
+      "tag": "0002_happy_agent_brand",
+      "breakpoints": true
     }
   ]
 }
