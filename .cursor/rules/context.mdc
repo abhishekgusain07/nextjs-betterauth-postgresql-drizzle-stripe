@@ -1,0 +1,67 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+PrintMoney: SaaS Template
+Project Overview
+Velocity is a comprehensive SaaS starter template designed to help developers ship their ideas blazingly fast. The template provides a solid foundation with pre-configured, production-ready components, enabling developers to focus on building their unique features rather than spending time on boilerplate code and infrastructure setup.
+Tech Stack
+Frontend
+
+Next.js: React framework with server-side rendering, API routes, and optimized build system
+TypeScript: For type safety and better developer experience
+Tailwind CSS: Utility-first CSS framework for rapid UI development
+shadcn/ui: Reusable UI components built with Radix UI and Tailwind
+
+Backend & Data
+
+Next.js API Routes: Serverless functions for backend logic
+Neon Postgres: Serverless PostgreSQL database with automatic scaling
+Drizzle ORM: TypeScript ORM for database interactions with a focus on type safety
+Database Schema: Includes common models for users, teams, subscriptions, and more
+
+Authentication
+
+Better Auth: Complete authentication solution with:
+
+Email/password authentication
+OAuth providers (Google, GitHub, etc.)
+Magic link login
+MFA support
+Session management
+Role-based access control
+
+
+
+Payments & Billing
+
+Stripe Integration: Complete subscription management
+
+Multiple pricing tiers
+Free trials
+Usage-based billing options
+Invoice management
+Payment failure handling
+Subscription lifecycle webhooks
+
+
+
+Monitoring & Analytics
+
+Sentry: Error tracking and performance monitoring
+
+Real-time error reporting
+User impact analysis
+Performance monitoring
+Release tracking
+
+
+PostHog: Product analytics and feature flags
+
+User event tracking
+Conversion funnels
+Session recordings
+A/B testing
+Feature flags for gradual rollouts

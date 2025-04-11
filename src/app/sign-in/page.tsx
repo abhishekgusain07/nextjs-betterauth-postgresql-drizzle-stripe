@@ -4,6 +4,7 @@ import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({
@@ -172,8 +173,6 @@ export default function SignIn() {
               <span className="bg-white px-2 text-gray-500">Or continue with</span>
             </div>
           </div>
-
-          {/* 
           Uncomment this section when you enable social providers in auth.ts
           
           <div className="mt-6 grid grid-cols-1 gap-3">
@@ -181,6 +180,8 @@ export default function SignIn() {
               type="button"
               className="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
               onClick={() => {
+
+                toast.message("coming soon ")
                 // When GitHub provider is enabled in auth.ts
                 // authClient.signIn.github();
               }}
@@ -191,7 +192,6 @@ export default function SignIn() {
               Sign in with GitHub
             </button>
           </div>
-          */}
         </div>
       </div>
     </div>
