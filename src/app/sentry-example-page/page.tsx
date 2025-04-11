@@ -3,10 +3,27 @@
 import Head from "next/head";
 import * as Sentry from "@sentry/nextjs";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { sentryErrorServerAction } from "@/utils/sentry/sentryErrorServerAction";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 export default function Page() {
   const [hasSentError, setHasSentError] = useState(false);
-
+  const [hasRscError, setHasRscError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const throwRscError = async() => {
+    try{
+      setLoading(true);
+      const data = await sentryErrorServerAction();
+      console.log(data);
+    }catch(e) {
+      toast.error("error happened");
+      setHasRscError(true);
+    }finally{
+      setLoading(false);
+    }
+  }
   return (
     <div>
       <Head>
@@ -47,7 +64,13 @@ export default function Page() {
             Throw Sample Error
           </span>
         </button>
-
+        <Button
+          variant="default"
+          onClick={throwRscError}
+          disabled={loading}
+        >
+          {loading ? <Loader2 className="size-3 animate-spin" /> : "Rsc Error"}
+        </Button>
         {hasSentError ? (
           <p className="success">
             Sample error was sent to Sentry.
@@ -56,6 +79,13 @@ export default function Page() {
           <div className="success_placeholder" />
         )}
 
+      {hasRscError ? (
+          <p className="success">
+            Sample error was sent to Sentry.
+          </p>
+        ) : (
+          <div className="success_placeholder" />
+        )}
         <div className="flex-spacer" />
         <p className="description">
           Adblockers will prevent errors from being sent to Sentry.
