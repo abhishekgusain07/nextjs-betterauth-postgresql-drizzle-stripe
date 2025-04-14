@@ -14,7 +14,8 @@ export default function NotSubscriber() {
 
       {config.auth.enabled && config.payments.enabled && (
         <section id="pricing" className="pb-[5rem]">
-          <Pricing />
+          {/* <Pricing /> */}
+          pricing (turned off for now)
         </section>
       )}
     </div>

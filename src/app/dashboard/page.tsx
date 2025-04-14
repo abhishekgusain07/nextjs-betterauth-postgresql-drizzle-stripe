@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { User } from "better-auth";
+import { Button } from "@/components/ui/button";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -20,6 +21,11 @@ export default function Dashboard() {
         >
           Sign Out
         </button>
+        <Button
+          onClick={() => {
+            router.replace("/onlypaid")
+          }}
+        >check paid status</Button>
       </div>
     </div>
   );

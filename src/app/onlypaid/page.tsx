@@ -2,40 +2,58 @@
 import { useUser } from '@/hooks/useUser';
 import { isAuthorized } from '@/utils/isAuthorized';
 import { Loader2 } from 'lucide-react';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner';
 
 const OnlyPaidSubs = () => {
+  const router = useRouter();
+  const { user, isLoading: userLoading } = useUser();
   const [loading, setLoading] = useState<boolean>(false);
-  const [authorized, setAuthorized] = useState<boolean>(false);
+  const [authorized, setAuthorized] = useState<boolean>(true);
+  
   useEffect(() => {
+    console.log("Effect running, authorized:", authorized);
     const checkSubscription = async() => {
+      if (!user || !user.id) return;
+      
       try {
         setLoading(true);
-        const {user} = await useUser();
-        const { authorized:res } = await isAuthorized(user?.id!);
-        setAuthorized(res);
+        const { authorized: res } = await isAuthorized(user.id);
+        console.log("Authorization result:", res);
+        setAuthorized(res); 
+        console.log("Set authorized to true");
       } catch (error) {
-        toast.error("cannot check subscription");
-      }finally {
+        console.error("Subscription check error:", error);
+        toast.error("Cannot check subscription");
+      } finally {
         setLoading(false);
       }
     }
-    checkSubscription();
-  },[])
-  if(loading) {
-    return <div>
-      <Loader2  className='size-4 animate-spin' />
+    
+    if (!userLoading && user) {
+      checkSubscription();
+    }
+  }, [user, userLoading, authorized]);
+  
+  console.log("Component state:", { userLoading, loading, authorized });
+  
+  if (userLoading || loading) {
+    return <div className="flex items-center justify-center min-h-screen">
+      <Loader2 className="size-8 animate-spin" />
     </div>
   }
+
   if (!authorized) {
-    console.log("not authorized");
-    redirect("/not-subscriber");
+    console.log("Not authorized, redirecting...");
+    router.replace("/not-subscriber");
+    return null;
   }
+  
   return (
-    <div>
-      authorized
+    <div className="p-8">
+      <h1 className="text-2xl font-bold">Premium Content</h1>
+      <p className="mt-4">Welcome to the premium area! You are authorized to view this content.</p>
     </div>
   )
 }
