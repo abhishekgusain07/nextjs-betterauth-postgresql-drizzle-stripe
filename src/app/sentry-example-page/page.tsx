@@ -1,12 +1,14 @@
 "use client";
 
 import Head from "next/head";
-import * as Sentry from "@sentry/nextjs";
+import * as OriginalSentry from "@sentry/nextjs";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { sentryErrorServerAction } from "@/utils/sentry/sentryErrorServerAction";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { Sentry } from "@/utils/sentry";
+import config from "@/config";
 
 export default function Page() {
   const [hasSentError, setHasSentError] = useState(false);
@@ -64,6 +66,13 @@ export default function Page() {
             Throw Sample Error
           </span>
         </button>
+        {/* Add info message when Sentry is disabled */}
+        {!config.monitoring.sentry.enabled && (
+          <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mt-4">
+            <p className="font-bold">Sentry is disabled in configuration</p>
+            <p className="text-sm">Errors will be logged to console only. Enable Sentry in config to see them in your Sentry dashboard.</p>
+          </div>
+        )}
         <Button
           variant="default"
           onClick={throwRscError}
