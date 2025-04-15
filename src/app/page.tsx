@@ -8,7 +8,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <NavbarDemo>
         {/* Hero Section */}
-        <section className="pt-40 pb-20 px-4 md:px-8 lg:px-16 flex flex-col items-center text-center">
+        <section className="pt-20 pb-20 px-4 md:px-8 lg:px-16 flex flex-col items-center text-center">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
             Ship Your SaaS <span className="text-blue-600 dark:text-blue-400">Blazingly Fast</span>
           </h1>
