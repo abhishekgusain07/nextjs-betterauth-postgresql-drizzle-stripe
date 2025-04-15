@@ -30,6 +30,9 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true
   },
+  images: {
+    domains: ['assets.aceternity.com'],
+  },
   async rewrites() {
     // Only set up PostHog rewrites if enabled
     if (config.analytics.posthog.enabled) {
