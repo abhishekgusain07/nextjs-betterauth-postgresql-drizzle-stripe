@@ -70,7 +70,6 @@ export function NavbarDemo({
       setIsLoggingOut(true);
       await authClient.signOut();
       toast.success('Logged out successfully');
-      router.push('/sign-in');
     } catch (error) {
       toast.error('Failed to log out. Please try again.');
       console.error('Logout error:', error);
