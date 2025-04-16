@@ -12,7 +12,7 @@ import { HoverEffect } from "@/components/ui/card-hover-effect";
 import type { LucideIcon } from "lucide-react";
 
 export default function Home() {
-  // Example announcement - set showAnnouncement to false to hide it
+  
   const showAnnouncement = true;
   const announcement = {
     message: "Check out our new",
