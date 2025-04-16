@@ -5,6 +5,7 @@ import Link from "next/link";
 import ProblemSection from "./components/problem";
 import SolutionSection from "./components/solution";
 import Footer from "./components/footer";
+import TechnologyUsed from "./components/techused";
 
 export default function Home() {
   return (
@@ -27,7 +28,8 @@ export default function Home() {
             </Link>
           </div>
         </section>
-
+        
+        <TechnologyUsed />
         {/* Features Section */}
         <section id="features" className="py-16 px-4 md:px-8 lg:px-16 bg-secondary/20">
           <div className="max-w-6xl mx-auto">
