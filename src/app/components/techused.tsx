@@ -83,36 +83,38 @@ const TechnologyUsed = () => {
 
   return (
     <TooltipProvider>
-      <section className="bg-background py-16">
+      <section className="bg-background/50 backdrop-blur-sm py-10 border-t border-b border-slate-100 dark:border-slate-800">
         <div className="mx-auto max-w-5xl px-6">
-          <div className="text-center">
-            <h2 className="text-3xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary/80 to-primary mb-2">Powered by Best-in-Class Technology</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">Leveraging industry-leading tools to deliver a seamless, reliable experience.</p>
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary/90 to-primary">Powered by Best-in-Class Technology</h2>
           </div>
-          <div className="mx-auto mt-16 flex max-w-4xl flex-wrap items-center justify-center gap-x-12 gap-y-8 sm:gap-x-16 sm:gap-y-12">
+          <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-x-8 gap-y-6 sm:gap-x-12">
             {logos.map((logo, index) => (
               logo.tooltip ? (
                 <Tooltip key={index}>
                   <TooltipTrigger asChild>
-                    <img
-                      className={`${logo.height} w-fit max-w-32 transition-transform duration-300 hover:scale-110 ${logo.additionalClasses || ''} cursor-help`}
-                      alt={logo.alt}
-                      width="auto"
-                      src={logo.src}
-                    />
+                    <div className="filter grayscale hover:grayscale-0 hover:brightness-110 transition-all duration-300">
+                      <img
+                        className={`${logo.height} w-fit max-w-28 transition-transform duration-300 hover:scale-110 ${logo.additionalClasses || ''} cursor-help`}
+                        alt={logo.alt}
+                        width="auto"
+                        src={logo.src}
+                      />
+                    </div>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>{logo.tooltip}</p>
                   </TooltipContent>
                 </Tooltip>
               ) : (
-                <img
-                  key={index}
-                  className={`${logo.height} w-fit max-w-32 transition-transform duration-300 hover:scale-110 ${logo.additionalClasses || ''}`}
-                  alt={logo.alt}
-                  width="auto"
-                  src={logo.src}
-                />
+                <div key={index} className="filter grayscale hover:grayscale-0 hover:brightness-110 transition-all duration-300">
+                  <img
+                    className={`${logo.height} w-fit max-w-28 transition-transform duration-300 hover:scale-110 ${logo.additionalClasses || ''}`}
+                    alt={logo.alt}
+                    width="auto"
+                    src={logo.src}
+                  />
+                </div>
               )
             ))}
           </div>

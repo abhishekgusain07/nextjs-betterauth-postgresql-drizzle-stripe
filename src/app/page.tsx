@@ -59,19 +59,17 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <NavbarDemo>
         {/* Hero Section */}
-        <section className="pt-20 pb-20 px-4 md:px-8 lg:px-16 flex flex-col items-center text-center">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
-            Ship Your SaaS <span className="text-blue-600 dark:text-blue-400">Blazingly Fast</span>
+        <section className="pt-8 pb-8 px-4 md:px-8 lg:px-16 flex flex-col items-center text-center">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400 dark:from-blue-400 dark:to-blue-200 leading-tight">
+            Ship Your SaaS <br />
+            <span className="inline-block mt-1 mb-2">Blazingly Fast</span>
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mb-10">
-            A comprehensive starter template with authentication, payments, and analytics built in.
+          <p className="text-lg text-muted-foreground max-w-xl mb-6">
+            Everything you need, ready to launch.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Link href="/dashboard" className="bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 rounded-md font-medium">
+            <Link href="/dashboard" className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-3 rounded-md font-medium text-lg shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all">
               Get Started
-            </Link>
-            <Link href="#features" className="border border-border hover:bg-accent hover:text-accent-foreground px-6 py-3 rounded-md font-medium">
-              Learn More
             </Link>
           </div>
         </section>
