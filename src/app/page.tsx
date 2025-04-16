@@ -7,10 +7,22 @@ import ProblemSection from "./components/problem";
 import SolutionSection from "./components/solution";
 import Footer from "./components/footer";
 import TechnologyUsed from "./components/techused";
+import Announcement from "./components/announcement";
 import { HoverEffect } from "@/components/ui/card-hover-effect";
 import type { LucideIcon } from "lucide-react";
 
 export default function Home() {
+  // Example announcement - set showAnnouncement to false to hide it
+  const showAnnouncement = true;
+  const announcement = {
+    message: "Check out our new",
+    link: {
+      text: "RAG-as-a-Service API Platform",
+      url: "https://example.com"
+    },
+    emoji: "🚀"
+  };
+
   const features: Array<{
     title: string;
     description: string;
@@ -57,6 +69,12 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <Announcement 
+        show={showAnnouncement} 
+        message={announcement.message}
+        link={announcement.link}
+        emoji={announcement.emoji}
+      />
       <NavbarDemo>
         {/* Hero Section */}
         <section className="pt-8 pb-8 px-4 md:px-8 lg:px-16 flex flex-col items-center text-center">
