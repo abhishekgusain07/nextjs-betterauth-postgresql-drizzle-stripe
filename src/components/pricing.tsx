@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CheckCircle2, DollarSign } from "lucide-react";
+import { CheckCircle2, DollarSign, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -50,17 +50,17 @@ const PricingHeader = ({
 }) => (
   <div className="text-center mb-10">
     {/* Pill badge */}
-    <div className="mx-auto w-fit rounded-full border border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-900/30 px-4 py-1 mb-6">
-      <div className="flex items-center gap-2 text-sm font-medium text-blue-900 dark:text-blue-200">
+    <div className="mx-auto w-fit rounded-full border border-primary/20 bg-primary/10 px-4 py-1 mb-6">
+      <div className="flex items-center gap-2 text-sm font-medium text-primary">
         <DollarSign className="h-4 w-4" />
         <span>Pricing</span>
       </div>
     </div>
 
-    <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-blue-800 to-gray-900 dark:from-white dark:via-blue-300 dark:to-white pb-2">
+    <h2 className="text-3xl md:text-4xl font-bold pb-2">
       {title}
     </h2>
-    <p className="text-gray-600 dark:text-gray-300 mt-4 max-w-2xl mx-auto">
+    <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
       {subtitle}
     </p>
   </div>
@@ -75,6 +75,9 @@ const PricingSwitch = ({ onSwitch }: PricingSwitchProps) => (
         </TabsTrigger>
         <TabsTrigger value="1" className="w-full">
           Yearly
+          <span className="ml-2 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-400">
+            Save 16%
+          </span>
         </TabsTrigger>
       </TabsList>
     </Tabs>
@@ -98,47 +101,42 @@ const PricingCard = ({
 }: PricingCardProps) => {
   const router = useRouter();
 
-  console.log("priceIdMonthly", priceIdMonthly);
   return (
     <Card
-      className={cn("w-full max-w-sm flex flex-col justify-between px-2 py-1", {
-        "relative border-2 border-blue-500 dark:border-blue-400": popular,
-        "shadow-2xl bg-gradient-to-b from-gray-900 to-gray-800 text-white":
-          exclusive,
-      })}
+      className={cn(
+        "w-full max-w-sm flex flex-col justify-between px-2 py-1 backdrop-blur-sm transition-all duration-200 hover:shadow-lg h-full", 
+        {
+          "relative border-2 border-primary": popular,
+          "relative": exclusive,
+        }
+      )}
     >
       {popular && (
-        <div className="absolute -top-3 left-0 right-0 mx-auto w-fit rounded-full bg-blue-500 dark:bg-blue-400 px-3 py-1">
+        <div className="absolute -top-3 left-0 right-0 mx-auto w-fit rounded-full bg-primary px-3 py-1">
           <p className="text-sm font-medium text-white">Most Popular</p>
+        </div>
+      )}
+      
+      {exclusive && (
+        <div className="absolute -top-3 left-0 right-0 mx-auto w-fit rounded-full bg-primary px-3 py-1">
+          <p className="text-sm font-medium text-white">Enterprise</p>
         </div>
       )}
 
       <div>
         <CardHeader className="space-y-2 pb-4">
           <CardTitle className="text-xl">{title}</CardTitle>
-          <CardDescription
-            className={cn("", {
-              "text-gray-300": exclusive,
-            })}
-          >
+          <CardDescription>
             {description}
           </CardDescription>
         </CardHeader>
 
         <CardContent className="pb-4">
           <div className="flex items-baseline gap-1">
-            <span
-              className={cn("text-4xl font-bold", {
-                "text-white": exclusive,
-              })}
-            >
+            <span className="text-4xl font-bold">
               ${isYearly ? yearlyPrice : monthlyPrice}
             </span>
-            <span
-              className={cn("text-muted-foreground", {
-                "text-gray-300": exclusive,
-              })}
-            >
+            <span className="text-muted-foreground">
               /mo
             </span>
           </div>
@@ -146,16 +144,8 @@ const PricingCard = ({
           <div className="mt-6 space-y-2">
             {features.map((feature) => (
               <div key={feature} className="flex gap-2">
-                <CheckCircle2
-                  className={cn("h-5 w-5 text-blue-500", {
-                    "text-blue-400": exclusive,
-                  })}
-                />
-                <p
-                  className={cn("text-muted-foreground", {
-                    "text-gray-300": exclusive,
-                  })}
-                >
+                <CheckCircle2 className="h-5 w-5 text-green-600" />
+                <p className="text-muted-foreground">
                   {feature}
                 </p>
               </div>
@@ -164,7 +154,7 @@ const PricingCard = ({
         </CardContent>
       </div>
 
-      <CardFooter>
+      <CardFooter className="mt-auto">
         <Button
           onClick={() => {
             if (!user) {
@@ -174,8 +164,7 @@ const PricingCard = ({
             handleCheckout(isYearly ? priceIdYearly : priceIdMonthly, true);
           }}
           className={cn("w-full", {
-            "bg-blue-500 hover:bg-blue-400": popular,
-            "bg-white text-gray-900 hover:bg-gray-100": exclusive,
+            "bg-primary hover:bg-primary/90": popular || exclusive,
           })}
         >
           {actionLabel}
@@ -189,7 +178,7 @@ export default function Pricing() {
   const [isYearly, setIsYearly] = useState<boolean>(false);
   const togglePricingPeriod = (value: string) =>
     setIsYearly(parseInt(value) === 1);
-  const { user} = useUser();
+  const { user } = useUser();
   const [stripePromise, setStripePromise] = useState<Promise<any> | null>(null);
 
   useEffect(() => {
@@ -198,7 +187,6 @@ export default function Pricing() {
 
   const handleCheckout = async (priceId: string, subscription: boolean) => {
     try {
-      console.log("subscription", subscription);
       const { data } = await axios.post(
         `/api/payments/create-checkout-session`,
         {
@@ -229,16 +217,17 @@ export default function Pricing() {
 
   const plans = [
     {
-      title: "Basic",
-      monthlyPrice: 10,
-      yearlyPrice: 100,
+      title: "Starter",
+      monthlyPrice: 29,
+      yearlyPrice: 24,
       description:
-        "Perfect for individuals and small teams just getting started.",
+        "Perfect for indie developers launching their first SaaS project.",
       features: [
-        "All essential features",
-        "Up to 5 team members",
-        "20GB storage",
-        "Basic support",
+        "All core features",
+        "Authentication & user management",
+        "Basic Stripe integration",
+        "Community support",
+        "1 team member"
       ],
       priceIdMonthly: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
       priceIdYearly: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
@@ -246,62 +235,76 @@ export default function Pricing() {
     },
     {
       title: "Pro",
-      monthlyPrice: 25,
-      yearlyPrice: 250,
-      description: "Advanced features for growing teams and businesses.",
+      monthlyPrice: 79,
+      yearlyPrice: 66,
+      description: "For growing startups that need more power and features.",
       features: [
-        "All Basic features",
-        "Up to 20 team members",
-        "50GB storage",
-        "Priority support",
+        "Everything in Starter",
         "Advanced analytics",
+        "Multi-tier subscription management",
+        "Priority email support",
+        "Up to 5 team members",
+        "Custom branding"
       ],
       priceIdMonthly: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
       priceIdYearly: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
-      actionLabel: "Get Pro",
+      actionLabel: "Upgrade to Pro",
       popular: true,
     },
     {
       title: "Enterprise",
-      description: "Custom solutions for large organizations.",
+      monthlyPrice: 299,
+      yearlyPrice: 249,
+      description: "Custom solutions for high-scale SaaS applications.",
       features: [
-        "All Pro features",
+        "Everything in Pro",
         "Unlimited team members",
-        "Unlimited storage",
         "24/7 dedicated support",
         "Custom integrations",
         "SLA guarantees",
+        "White-labeling",
+        "Dedicated account manager"
       ],
-      actionLabel: "Contact Sales",
       priceIdMonthly: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
       priceIdYearly: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
+      actionLabel: "Contact Sales",
       exclusive: true,
     },
   ];
 
   return (
-    <section className="px-4">
+    <section className="px-4 py-10" id="pricing">
       <div className="max-w-7xl mx-auto">
         <PricingHeader
-          title="Choose Your Plan"
-          subtitle="Select the perfect plan for your needs. All plans include a 14-day free trial."
+          title="Simple, Transparent Pricing"
+          subtitle="Launch your SaaS product faster with our complete template. All plans include the core infrastructure you need."
         />
         <PricingSwitch onSwitch={togglePricingPeriod} />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.5, staggerChildren: 0.1 }}
           viewport={{ once: true }}
           className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mt-10"
         >
-          {plans.map((plan) => (
-            <PricingCard
+          {plans.map((plan, index) => (
+            <motion.div
               key={plan.title}
-              user={user}
-              handleCheckout={handleCheckout}
-              {...plan}
-              isYearly={isYearly}
-            />
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ 
+                duration: 0.5, 
+                delay: index * 0.1
+              }}
+              viewport={{ once: true }}
+            >
+              <PricingCard
+                user={user}
+                handleCheckout={handleCheckout}
+                {...plan}
+                isYearly={isYearly}
+              />
+            </motion.div>
           ))}
         </motion.div>
       </div>

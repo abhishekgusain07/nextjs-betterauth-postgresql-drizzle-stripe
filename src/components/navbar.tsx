@@ -191,12 +191,11 @@ export function NavbarDemo({
     <div className="relative w-full">
       <Navbar>
         {/* Desktop Navigation */}
-        <NavBody className="bg-blue-100">
+        <NavBody className="">
           <NavbarLogo />
           <NavItems items={navItems} />
           <div className="flex items-center gap-4">
             {renderAuthUI()}
-            <NavbarButton variant="primary" onClick={() => router.push("/book-a-call")}>Book a call</NavbarButton>
           </div>
         </NavBody>
 

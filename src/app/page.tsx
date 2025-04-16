@@ -2,6 +2,9 @@ import { NavbarDemo } from "@/components/navbar";
 import Pricing from "@/components/pricing";
 import Image from "next/image";
 import Link from "next/link";
+import ProblemSection from "./components/problem";
+import SolutionSection from "./components/solution";
+import Footer from "./components/footer";
 
 export default function Home() {
   return (
@@ -61,9 +64,12 @@ export default function Home() {
           </div>
         </section>
 
+
+        <ProblemSection />
+
+        <SolutionSection />
         {/* Pricing Section */}
         <section className="py-16 px-4 md:px-8 lg:px-16">
-          <h2 className="text-3xl font-bold text-center mb-16">Simple, Transparent Pricing</h2>
           <Pricing />
         </section>
 
@@ -79,6 +85,7 @@ export default function Home() {
             </Link>
           </div>
         </section>
+        <Footer />
       </NavbarDemo>
     </div>
   );
