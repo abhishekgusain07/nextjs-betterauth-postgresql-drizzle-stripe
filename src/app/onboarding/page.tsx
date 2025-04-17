@@ -2,284 +2,225 @@
 
 import { useState } from "react"
 import { useRouter } from 'next/navigation'
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Textarea } from "@/components/ui/textarea"
-import { Progress } from "@/components/ui/progress"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 
-import {
-  Stepper,
-  StepperIndicator,
-  StepperItem,
-  StepperSeparator,
-  StepperTrigger,
-} from "@/components/ui/stepper"
+interface Field {
+  id: string;
+  label: string;
+  placeholder: string;
+  optional?: boolean;
+  prefix?: string;
+}
+
+interface Option {
+  id: string;
+  title: string;
+  description: string;
+}
+
+interface Step {
+  title: string;
+  subtitle: string;
+  fields?: Field[];
+  options?: Option[];
+  completionIcon?: boolean;
+}
+
+const steps: Step[] = [
+  {
+    title: "Welcome! First things first...",
+    subtitle: "You can always change them later.",
+    fields: [
+      { id: "fullName", label: "Full Name", placeholder: "Steve Jobs" },
+      { id: "displayName", label: "Display Name", placeholder: "Steve" },
+    ]
+  },
+  {
+    title: "Let's set up a home for all your work",
+    subtitle: "You can always create another workspace later.",
+    fields: [
+      { id: "workspaceName", label: "Workspace Name", placeholder: "Eden" },
+      { id: "workspaceUrl", label: "Workspace URL", placeholder: "Example", optional: true, prefix: "www.eden.com/" },
+    ]
+  },
+  {
+    title: "How are you planning to use Eden?",
+    subtitle: "We'll streamline your setup experience accordingly.",
+    options: [
+      { id: "myself", title: "For myself", description: "Write better. Think more clearly. Stay organized." },
+      { id: "team", title: "With my team", description: "Wikis, docs, tasks & projects, all in one place." },
+    ]
+  },
+  {
+    title: "Congratulations, you're all set!",
+    subtitle: "You have completed onboarding, you can start using the platform.",
+    completionIcon: true
+  }
+];
 
 export default function OnboardingPage() {
   const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
-  const [progress, setProgress] = useState(25)
-  
   const [formData, setFormData] = useState({
-    name: "",
-    role: "",
-    companySize: "",
-    industry: "",
-    useCase: "",
-    preferredTools: [] as string[],
-    features: [] as string[],
-    goals: "",
+    fullName: "",
+    displayName: "",
+    workspaceName: "",
+    workspaceUrl: "",
+    usageType: "",
   })
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSelectChange = (name: string, value: string) => {
-    setFormData(prev => ({ ...prev, [name]: value }))
+  const handleSelectOption = (optionId: string) => {
+    setFormData(prev => ({ ...prev, usageType: optionId }))
   }
-
-  const handleCheckboxChange = (name: string, value: string, checked: boolean) => {
-    setFormData(prev => {
-      const currentArray = [...(prev[name as keyof typeof prev] as string[])]
-      if (checked) {
-        return { ...prev, [name]: [...currentArray, value] }
-      } else {
-        return { ...prev, [name]: currentArray.filter(item => item !== value) }
-      }
-    })
-  }
-
-  const totalSteps = 4
 
   const nextStep = () => {
-    if (currentStep < totalSteps) {
+    if (currentStep < steps.length) {
       setCurrentStep(prev => prev + 1)
-      setProgress((currentStep + 1) * (100 / totalSteps))
-    }
-  }
-
-  const prevStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(prev => prev - 1)
-      setProgress((currentStep - 1) * (100 / totalSteps))
     }
   }
 
   const handleComplete = () => {
-    // Here you would typically save the user preferences
     console.log("Form data submitted:", formData)
-    // Navigate to dashboard after completing onboarding
     router.push("/dashboard")
   }
 
+  // Get current step data
+  const currentStepData = steps[currentStep - 1] || steps[0];
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-50 to-white dark:from-slate-950 dark:to-slate-900 p-4">
-      <Card className="w-full max-w-3xl">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl text-center">Set Up Your Account</CardTitle>
-          <CardDescription className="text-center">
-            Let's personalize your experience. This will only take a minute.
-          </CardDescription>
-          <Progress value={progress} className="h-2 mt-4" />
-        </CardHeader>
-        <CardContent>
-          <div className="mx-auto w-full max-w-xs mb-6">
-            <Stepper
-              value={currentStep}
-              onValueChange={setCurrentStep}
-              orientation="horizontal"
-              className="mb-8"
-            >
-              {Array.from({ length: totalSteps }).map((_, idx) => (
-                <StepperItem key={idx + 1} step={idx + 1} className="flex-1">
-                  <StepperTrigger>
-                    <StepperIndicator />
-                  </StepperTrigger>
-                  {idx < totalSteps - 1 && <StepperSeparator />}
-                </StepperItem>
-              ))}
-            </Stepper>
+    <div className="min-h-screen flex flex-col items-center px-4 py-16 bg-white">
+      {/* Logo */}
+      <div className="mb-12">
+        <div className="flex justify-center">
+          <div className="h-12 w-12 bg-indigo-600 rounded-md flex items-center justify-center mb-4">
+            <span className="text-white text-xl font-bold">P</span>
           </div>
+        </div>
+        <h1 className="text-2xl font-bold text-center text-slate-800">Printmoney</h1>
+      </div>
 
-          {/* Step 1: Basic Info */}
-          {currentStep === 1 && (
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">What's your name?</Label>
-                <Input 
-                  id="name" 
-                  name="name" 
-                  placeholder="Enter your full name" 
-                  value={formData.name}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="role">What's your role?</Label>
-                <Select onValueChange={(value: string) => handleSelectChange("role", value)} value={formData.role}>
-                  <SelectTrigger id="role">
-                    <SelectValue placeholder="Select your role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="developer">Developer</SelectItem>
-                    <SelectItem value="designer">Designer</SelectItem>
-                    <SelectItem value="product-manager">Product Manager</SelectItem>
-                    <SelectItem value="founder">Founder</SelectItem>
-                    <SelectItem value="executive">Executive</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+      {/* Step Indicators */}
+      <div className="flex items-center mb-16 w-full max-w-md mx-auto">
+        {Array.from({ length: steps.length }).map((_, idx) => (
+          <div key={idx} className="flex-1 flex items-center">
+            <div 
+              className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                idx + 1 <= currentStep 
+                  ? "bg-indigo-600 text-white" 
+                  : "bg-white text-slate-400 border border-slate-200"
+              }`}
+            >
+              {idx + 1}
             </div>
-          )}
+            {idx < steps.length - 1 && (
+              <div 
+                className={`h-[1px] flex-1 ${
+                  idx + 2 <= currentStep ? "bg-indigo-600" : "bg-slate-200"
+                }`}
+              />
+            )}
+          </div>
+        ))}
+      </div>
 
-          {/* Step 2: Company */}
-          {currentStep === 2 && (
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="company-size">Company size</Label>
-                <RadioGroup 
-                  onValueChange={(value: string) => handleSelectChange("companySize", value)} 
-                  value={formData.companySize}
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="solo" id="solo" />
-                    <Label htmlFor="solo">Solo / Freelancer</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="2-10" id="small" />
-                    <Label htmlFor="small">2-10 employees</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="11-50" id="medium" />
-                    <Label htmlFor="medium">11-50 employees</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="51+" id="large" />
-                    <Label htmlFor="large">51+ employees</Label>
-                  </div>
-                </RadioGroup>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="industry">Industry</Label>
-                <Select onValueChange={(value: string) => handleSelectChange("industry", value)} value={formData.industry}>
-                  <SelectTrigger id="industry">
-                    <SelectValue placeholder="Select your industry" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="technology">Technology</SelectItem>
-                    <SelectItem value="finance">Finance</SelectItem>
-                    <SelectItem value="healthcare">Healthcare</SelectItem>
-                    <SelectItem value="education">Education</SelectItem>
-                    <SelectItem value="ecommerce">E-commerce</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+      {/* Content */}
+      <div className="w-full max-w-md mx-auto">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-bold text-slate-800 mb-2">
+            {currentStepData.title}
+          </h2>
+          <p className="text-slate-500">
+            {currentStepData.subtitle}
+          </p>
+        </div>
+
+        {/* Completion Icon */}
+        {currentStepData.completionIcon && (
+          <div className="flex justify-center mb-10">
+            <div className="h-16 w-16 bg-indigo-600 rounded-full flex items-center justify-center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 6L9 17L4 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Step 3: Use Cases */}
-          {currentStep === 3 && (
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label>What features are you most interested in?</Label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  {['Authentication', 'Payments', 'Analytics', 'Database', 'UI Components', 'Deployment'].map((feature) => (
-                    <div key={feature} className="flex items-center space-x-2">
-                      <Checkbox 
-                        id={feature.toLowerCase()} 
-                        checked={formData.features.includes(feature.toLowerCase())}
-                        onCheckedChange={(checked: boolean) => 
-                          handleCheckboxChange("features", feature.toLowerCase(), checked)
-                        }
-                      />
-                      <Label htmlFor={feature.toLowerCase()}>{feature}</Label>
+        {/* Form Fields */}
+        {currentStepData.fields && currentStepData.fields.length > 0 && (
+          <div className="space-y-4 mb-8">
+            {currentStepData.fields.map((field) => (
+              <div key={field.id} className="space-y-2">
+                <Label htmlFor={field.id}>
+                  {field.label} {field.optional && <span className="text-slate-400 text-sm">(optional)</span>}
+                </Label>
+                {field.prefix ? (
+                  <div className="flex">
+                    <div className="bg-slate-100 px-3 py-2 rounded-l-md border border-r-0 border-slate-200 text-slate-500">
+                      {field.prefix}
                     </div>
-                  ))}
-                </div>
+                    <Input
+                      id={field.id}
+                      name={field.id}
+                      placeholder={field.placeholder}
+                      value={formData[field.id as keyof typeof formData] as string}
+                      onChange={handleInputChange}
+                      className="rounded-l-none flex-1"
+                    />
+                  </div>
+                ) : (
+                  <Input
+                    id={field.id}
+                    name={field.id}
+                    placeholder={field.placeholder}
+                    value={formData[field.id as keyof typeof formData] as string}
+                    onChange={handleInputChange}
+                  />
+                )}
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="use-case">Primary use case</Label>
-                <Select onValueChange={(value: string) => handleSelectChange("useCase", value)} value={formData.useCase}>
-                  <SelectTrigger id="use-case">
-                    <SelectValue placeholder="What will you build?" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="internal-tool">Internal Tool</SelectItem>
-                    <SelectItem value="consumer-app">Consumer App</SelectItem>
-                    <SelectItem value="b2b-saas">B2B SaaS</SelectItem>
-                    <SelectItem value="marketplace">Marketplace</SelectItem>
-                    <SelectItem value="ecommerce">E-commerce Site</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          )}
+            ))}
+          </div>
+        )}
 
-          {/* Step 4: Goals */}
-          {currentStep === 4 && (
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="goals">What are your goals with our platform?</Label>
-                <Textarea 
-                  id="goals" 
-                  name="goals" 
-                  placeholder="Tell us what you hope to achieve..." 
-                  className="min-h-[100px]"
-                  value={formData.goals}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Which tools do you prefer to use?</Label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  {['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Stripe', 'PostgreSQL'].map((tool) => (
-                    <div key={tool} className="flex items-center space-x-2">
-                      <Checkbox 
-                        id={tool.toLowerCase().replace('.', '-')} 
-                        checked={formData.preferredTools.includes(tool.toLowerCase())}
-                        onCheckedChange={(checked: boolean) => 
-                          handleCheckboxChange("preferredTools", tool.toLowerCase(), checked as boolean)
-                        }
-                      />
-                      <Label htmlFor={tool.toLowerCase().replace('.', '-')}>{tool}</Label>
-                    </div>
-                  ))}
+        {/* Options */}
+        {currentStepData.options && currentStepData.options.length > 0 && (
+          <div className="grid grid-cols-2 gap-4 mb-8">
+            {currentStepData.options.map((option) => (
+              <div 
+                key={option.id}
+                className={`p-4 border rounded-md cursor-pointer transition-all ${
+                  formData.usageType === option.id 
+                    ? "border-indigo-600 bg-indigo-50" 
+                    : "border-slate-200 hover:border-slate-300"
+                }`}
+                onClick={() => handleSelectOption(option.id)}
+              >
+                <div className="flex items-center mb-2">
+                  <div className={`w-5 h-5 rounded-md ${formData.usageType === option.id ? "bg-indigo-600" : "bg-slate-200"}`} />
                 </div>
+                <h3 className="font-medium text-slate-800">{option.title}</h3>
+                <p className="text-sm text-slate-500">{option.description}</p>
               </div>
-            </div>
-          )}
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button 
-            variant="outline"
-            onClick={prevStep}
-            disabled={currentStep === 1}
-          >
-            Back
-          </Button>
-          {currentStep < totalSteps ? (
-            <Button onClick={nextStep}>Continue</Button>
-          ) : (
-            <Button onClick={handleComplete}>Complete Setup</Button>
-          )}
-        </CardFooter>
-      </Card>
+            ))}
+          </div>
+        )}
+        
+        {/* Action Button */}
+        <Button 
+          className="w-full py-6 bg-indigo-600 hover:bg-indigo-700"
+          onClick={currentStep === steps.length ? handleComplete : nextStep}
+        >
+          {currentStep === steps.length ? "Launch Eden" : "Create Workspace"}
+        </Button>
+      </div>
     </div>
   )
 } 
