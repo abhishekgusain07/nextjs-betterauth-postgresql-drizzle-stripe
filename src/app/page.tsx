@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 import { NavbarDemo } from "@/components/navbar";
 import Pricing from "@/components/pricing";
 import Image from "next/image";
@@ -12,8 +13,22 @@ import { HoverEffect } from "@/components/ui/card-hover-effect";
 import type { LucideIcon } from "lucide-react";
 
 export default function Home() {
+  const [showAnnouncement, setShowAnnouncement] = useState(true);
   
-  const showAnnouncement = true;
+  useEffect(() => {
+    // Check if the announcement has been dismissed before
+    const announcementDismissed = localStorage.getItem('announcement_dismissed');
+    if (!announcementDismissed) {
+      setShowAnnouncement(true);
+    }
+  }, []);
+  
+  const handleAnnouncementDismiss = () => {
+    // Store the dismissal in localStorage so it stays dismissed on refresh
+    localStorage.setItem('announcement_dismissed', 'true');
+    setShowAnnouncement(false);
+  };
+  
   const announcement = {
     message: "Check out our new",
     link: {
@@ -74,6 +89,7 @@ export default function Home() {
         message={announcement.message}
         link={announcement.link}
         emoji={announcement.emoji}
+        onDismiss={handleAnnouncementDismiss}
       />
       <NavbarDemo>
         {/* Hero Section */}
