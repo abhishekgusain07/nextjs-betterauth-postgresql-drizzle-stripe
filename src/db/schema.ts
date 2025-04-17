@@ -8,7 +8,8 @@ export const user = pgTable("user", {
 	image: text('image'),
 	createdAt: timestamp('created_at').notNull(),
 	subscription: text("subscription"),
-	updatedAt: timestamp('updated_at').notNull()
+	updatedAt: timestamp('updated_at').notNull(),
+	onboardingCompleted: boolean('onboarding_completed').notNull().default(false)
 });
 
 export const session = pgTable("session", {
