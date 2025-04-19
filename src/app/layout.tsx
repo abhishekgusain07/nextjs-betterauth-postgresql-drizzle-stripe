@@ -17,25 +17,6 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "PrintMoney - SaaS Template",
   description: "Comprehensive SaaS starter template to ship your ideas blazingly fast",
-  openGraph: {
-    title: "PrintMoney - SaaS Template",
-    description: "Comprehensive SaaS starter template to ship your ideas blazingly fast",
-    images: [
-      {
-        url: "/printmoney.png",
-        width: 1200,
-        height: 630,
-        alt: "PrintMoney SaaS Template",
-      }
-    ],
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "PrintMoney - SaaS Template",
-    description: "Comprehensive SaaS starter template to ship your ideas blazingly fast",
-    images: ["/printmoney.png"],
-  },
 };
 
 export default function RootLayout({
@@ -43,6 +24,23 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
+      <meta property="og:image" content="/printmoney.png" />
+      <meta property="og:image:type" content="image/png" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta
+        property="og:site_name"
+        content="PrintMoney"
+      />
+      <meta
+        property="og:url"
+        content="https://printmoney.dev/"
+      />
+      <meta name="twitter:image" content="/printmoney.png" />
+      <meta name="twitter:image:type" content="image/png" />
+      <meta name="twitter:image:width" content="1200" />
+      <meta name="twitter:image:height" content="630" />
+      <meta name="twitter:card" content="summary_large_image" />
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <PostHogProvider>
           <Toaster />
