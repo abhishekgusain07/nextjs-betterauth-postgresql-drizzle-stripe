@@ -11,9 +11,13 @@ import TechnologyUsed from "./components/techused";
 import Announcement from "./components/announcement";
 import { HoverEffect } from "@/components/ui/card-hover-effect";
 import type { LucideIcon } from "lucide-react";
+import { useFeedbackModal } from "@/hooks/useFeedbackModal";
+import { useUser } from "@/hooks/useUser";
 
 export default function Home() {
   const [showAnnouncement, setShowAnnouncement] = useState(true);
+  const { user } = useUser();
+  const { openFeedbackModal, FeedbackModalComponent } = useFeedbackModal(user?.id);
   
   useEffect(() => {
     // Check if the announcement has been dismissed before
@@ -30,12 +34,18 @@ export default function Home() {
   };
   
   const announcement = {
-    message: "Check out our new",
+    message: "We value your input! Please",
     link: {
-      text: "RAG-as-a-Service API Platform",
-      url: "https://example.com"
+      text: "share your feedback",
+      url: "#feedback"
     },
-    emoji: "🚀"
+    emoji: "💬"
+  };
+
+  // Handler for the announcement link click
+  const handleFeedbackClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    openFeedbackModal();
   };
 
   const features: Array<{
@@ -90,6 +100,7 @@ export default function Home() {
         link={announcement.link}
         emoji={announcement.emoji}
         onDismiss={handleAnnouncementDismiss}
+        onLinkClick={handleFeedbackClick}
       />
       <NavbarDemo>
         {/* Hero Section */}
@@ -140,6 +151,9 @@ export default function Home() {
         </section>
         <Footer />
       </NavbarDemo>
+      
+      {/* Render the feedback modal */}
+      <FeedbackModalComponent />
     </div>
   );
 }

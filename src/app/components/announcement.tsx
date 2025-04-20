@@ -11,9 +11,17 @@ interface AnnouncementProps {
   };
   emoji?: string;
   onDismiss?: () => void;
+  onLinkClick?: (e: React.MouseEvent) => void;
 }
 
-const Announcement = ({ show: initialShow, message, link, emoji = "🚀", onDismiss }: AnnouncementProps) => {
+const Announcement = ({ 
+  show: initialShow, 
+  message, 
+  link, 
+  emoji = "🚀", 
+  onDismiss, 
+  onLinkClick 
+}: AnnouncementProps) => {
   const [show, setShow] = useState(initialShow);
 
   if (!show) return null;
@@ -29,14 +37,13 @@ const Announcement = ({ show: initialShow, message, link, emoji = "🚀", onDism
         <p className="text-sm text-gray-600 dark:text-gray-300 text-center pr-8">
           {emoji} {message}{' '}
           {link && (
-            <Link 
+            <a 
               href={link.url} 
-              target={link.url.startsWith('http') ? "_blank" : undefined} 
-              rel={link.url.startsWith('http') ? "noopener noreferrer" : undefined}
+              onClick={onLinkClick}
               className="font-semibold text-emerald-600 hover:text-emerald-500 dark:text-emerald-400 dark:hover:text-emerald-300 underline underline-offset-2"
             >
               {link.text}
-            </Link>
+            </a>
           )}
         </p>
         <button 
